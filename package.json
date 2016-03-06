@@ -1,14 +1,16 @@
 {
   "name": "flowyjs",
-  "version": "1.2.0",
+  "version": "0.0.0-semantically-released",
   "description": "Create flowcharts algorithmically",
   "main": "./src/index.js",
   "scripts": {
-    "test": "mocha src/indexSpec.js -w"
+    "commit": "git-cz",
+    "test": "mocha src/indexSpec.js -w",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/t3pleni9/FlowyJS.git"
+    "url": "https://github.com/t3pleni9/FlowyJS.git"
   },
   "keywords": [
     "Flowchart",
@@ -22,6 +24,12 @@
   "homepage": "https://github.com/t3pleni9/FlowyJS#readme",
   "devDependencies": {
     "chai": "3.5.0",
-    "mocha": "2.4.5"
+    "commitizen": "2.6.1",
+    "cz-conventional-changelog": "1.1.5",
+    "mocha": "2.4.5",
+    "semantic-release": "^4.3.5"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
   }
 }
