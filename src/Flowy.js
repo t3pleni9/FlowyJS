@@ -1,22 +1,34 @@
 Flowy = function() {
   var chart = {
-    block: new Block('Begin', 'Begin')
-  }; 
+    block: new Block('Begin', 'Algorithm')
+  };
+
+  var topBlock = [];
   
   
   this.getBlock = function() {
-    return chart.block.getObject();
+    return chart.block;
   };
 
   this.setBlock = function(blockObject) {
     chart.block = blockObject;
   };
 
-  this.tree = chart.block.tree();
+  this.tree = chart.block.tree;
   
-  this.pushBlock = function(block) {
+  this.pushBlock = function(block, updateTop) {
     chart.block.push(block);
+    updateTop ? this.tree = function()
+    {
+      topBlock.push(chart.block);
+      chart.block = block;
+      return block.tree;
+    }() : null;
   };
+
+  this.end = function() { 
+    topBlock.length > 0 ? chart.block =  topBlock.pop() : null;
+  }
 };
 
 Flowy.prototype.createBlock = function(desc, type) {
@@ -32,7 +44,24 @@ Flowy.prototype.statement = function(desc){
   var block = this.createBlock(desc, 'Statement');
   this.pushBlock(block);
   return this;
+};
+
+Flowy.prototype.if = function(desc) {
+  var block = this.createBlock(desc, 'If');
+  this.pushBlock(block, true);
+  return this;
+};
+
+Flowy.prototype.then = function(desc) { 
+  var block = this.createBlock(desc, desc?'Statement':'Empty');
+  this.pushBlock(block);
+  return this;
+};
+
+Flowy.prototype.do = function(desc) { 
+  return this.then(desc);
 }
+
 
 
 
@@ -55,9 +84,7 @@ var Block = function(blockDesc, blockType) {
     return type ? blockObject.type = type : blockObject.type;
   }
   
-  this.tree = function(){
-    return  blockObject.tree;  
-  };
+  this.tree =  blockObject.tree;
   
   this.push = function(block) {
     blockObject.tree.push(block);
