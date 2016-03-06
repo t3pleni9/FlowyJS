@@ -71,8 +71,7 @@ Flowy = function() {
       
       if(block.tree)
       block.tree = block.tree.map(function(_) {
-                     _ = getObjectRec(_);
-                     return _; 
+                     return getObjectRec(_); 
                    });
       return block;
     };

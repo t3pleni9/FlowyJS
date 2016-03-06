@@ -1,7 +1,5 @@
 /*global  */
-'use strict'
-var expect = require('chai').expect,
-    assert = require('chai').assert;
+var expect = require('chai').expect;
 require('./index');
 
 
@@ -176,7 +174,5 @@ describe('flowy', function() {
           type: 'Algorithm'
         });
     });
-    
   });
-
 });
