@@ -1,5 +1,6 @@
 /*global  */
-var expect = require('chai').expect;
+var expect = require('chai').expect,
+    assert = require('chai').assert;
 require('./index');
 
 
@@ -94,9 +95,34 @@ describe('flowy', function() {
 
     it('Should set top block to current block', function(){
       flowy.if('x > 2').then().do('x = x + 1').end();
-      expect(flowy.getBlock().desc()).to.be.equal('Begin'); 
+      expect(flowy.getBlock().desc()).to.be.equal('Begin');
+      expect(flowy.tree[0].type()).to.be.equal('If'); 
     });
 
+    it('Top block should be ElseIf block', function(){
+      flowy.if('x > 2').then('x = x + 1').elseif('x = x + 2');
+      expect(flowy.getBlock().type()).to.be.equal('ElseIf');
+      expect(flowy.getBlock().desc()).to.be.equal('x = x + 2');
+    });
+
+    it('Top block should be Else block', function(){
+      flowy.if('x > 2').then('x = x + 1').else('x = x + 2');
+      expect(flowy.getBlock().type()).to.be.equal('Else');
+      expect(flowy.getBlock().desc()).to.be.equal('x = x + 2');
+    });
+
+    it('Should throw an exception', function(){ 
+      expect(flowy.else.bind(flowy.else,'x = x+2')).to.throw('Else without an If');
+      expect(flowy.elseif.bind(flowy.elseif,'x = x+2')).to.throw('Else without an If');
+      expect(flowy.if().else().else.bind(flowy.else,'x = x+2')).to.throw('Else without an If');
+    });
+
+    it('Should not throw an exception', function(){ 
+      expect(flowy.if().else.bind(flowy.else,'x = x+2')).to.not.throw('Else without an If');
+      expect(flowy.if().elseif().elseif.bind(flowy.elseif,'x = x+2')).to.not.throw('Else without an If');
+      expect(flowy.if().elseif().else.bind(flowy.else,'x = x+2')).to.not.throw('Else without an If');
+    });
+    
   });
 
 });

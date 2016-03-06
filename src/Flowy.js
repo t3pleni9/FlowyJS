@@ -22,13 +22,41 @@ Flowy = function() {
     {
       topBlock.push(chart.block);
       chart.block = block;
-      return block.tree;
+      return chart.block.tree;
     }() : null;
   };
 
   this.end = function() { 
-    topBlock.length > 0 ? chart.block =  topBlock.pop() : null;
-  }
+    topBlock.length > 0 ? this.tree = function()
+    {
+      chart.block =  topBlock.pop()
+      return chart.block.tree;
+    }()  : null;
+  };
+  
+  this.else = function(desc) {
+    var type = chart.block.type();
+    if(['If','ElseIf'].indexOf(type) != -1 ) {  
+      var block = this.createBlock(desc, 'Else');
+      this.end();
+      this.pushBlock(block, true);
+      return this;
+    } else {
+      throw "Else without an If";
+    }
+  };
+
+  this.elseif = function(desc) {
+    var type = chart.block.type();
+    if(['If','ElseIf'].indexOf(type) != -1 ) {
+      var block = this.createBlock(desc, 'ElseIf');
+      this.end();
+      this.pushBlock(block, true);
+      return this;
+    } else {
+      throw new Error('Else without an If')
+    }  
+  };
 };
 
 Flowy.prototype.createBlock = function(desc, type) {
@@ -60,7 +88,8 @@ Flowy.prototype.then = function(desc) {
 
 Flowy.prototype.do = function(desc) { 
   return this.then(desc);
-}
+};
+
 
 
 
