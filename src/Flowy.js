@@ -1,43 +1,67 @@
 Flowy = function() {
-  var block = new Block('begin');
+  var chart = {
+    block: new Block('Begin', 'Begin')
+  }; 
+  
+  
   this.getBlock = function() {
-    return block.getObject();
+    return chart.block.getObject();
   };
 
   this.setBlock = function(blockObject) {
-    block = blockObject;
-  }
+    chart.block = blockObject;
+  };
 
-  this.createBlock = function(name) {
-    var block = new Block();
-    block.setName(name);
-    return block.getObject();
-  } 
+  this.tree = chart.block.tree();
+  
+  this.pushBlock = function(block) {
+    chart.block.push(block);
+  };
 };
+
+Flowy.prototype.createBlock = function(desc, type) {
+  var block = new Block(desc, type);
+  return block;
+}
 
 Flowy.prototype.getJSON = function() {
   return this.getBlock();
 };
 
+Flowy.prototype.statement = function(desc){
+  var block = this.createBlock(desc, 'Statement');
+  this.pushBlock(block);
+  return this;
+}
 
 
-var Block = function(blockName) {
+
+var Block = function(blockDesc, blockType) {
   var blockObject = {
     tree: [],
-    name: blockName
+    desc: blockDesc,
+    type: blockType
   };
 
   this.getObject = function() {
     return blockObject;
   };
+  
+  this.desc = function(desc){
+    return desc ? blockObject.desc = desc : blockObject.desc;
+  };
 
-  this.setName = function(name) {
-    blockObject.name = name;
+  this.type = function(type){
+    return type ? blockObject.type = type : blockObject.type;
   }
-
-  this.addBlock = function(block) {
+  
+  this.tree = function(){
+    return  blockObject.tree;  
+  };
+  
+  this.push = function(block) {
     blockObject.tree.push(block);
-  }
-}
+  };
+};
 
   
