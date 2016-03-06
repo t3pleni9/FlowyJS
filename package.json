@@ -5,8 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "commit": "git-cz",
-    "test:single": "mocha src/indexSpec.js",
-    "test": "mocha src/indexSpec.js -w",
+    "test:single": "istanbul cover -x *Spec.js _mocha -- -R spec test/indexSpec.js test/flowySpec.js",
+    "test": "mocha -- test/indexSpec.js test/flowySpec.js",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "commitizen": "2.6.1",
     "cz-conventional-changelog": "1.1.5",
     "ghooks": "1.0.3",
+    "istanbul": "0.4.2",
     "mocha": "2.4.5",
     "semantic-release": "^4.3.5"
   },
@@ -35,7 +36,7 @@
     "path": "node_modules/cz-conventional-changelog"
   },
   "config": {
-    "ghooks":{
+    "ghooks": {
       "pre-commit": "npm run test:single"
     }
   }

@@ -2,3 +2,4 @@
 TAGS
 node_modules
 *.log
+coverage

@@ -1,6 +1,6 @@
 /*global  */
 var expect = require('chai').expect;
-require('./index');
+require('../src/Flowy');
 
 
 describe('flowy', function() {
@@ -19,6 +19,12 @@ describe('flowy', function() {
     expect(block.desc).to.be.equal('test');
   });
 
+  it('Should set the default block with desc "test"', function() {
+    var block = flowy.createBlock('test');
+    flowy.setBlock(block)
+    expect(flowy.desc()).to.be.equal('test');
+  })
+
   it('.desc should return "test"', function() {
     var block = flowy.createBlock('test');
     expect(block.desc).to.be.equal('test');
@@ -29,6 +35,26 @@ describe('flowy', function() {
     block.desc = 'test2';
     expect(block.desc).to.be.equal('test2');
   });
+
+  it('.desc() should return desc as "Begin"', function() {
+    expect(flowy.desc()).to.be.equal('Begin');
+  });
+
+  it('.desc("test") should set desc as "test"', function() {
+    flowy.desc('test');
+    expect(flowy.desc()).to.be.equal('test');
+  });
+
+  it('.type() should return type as "Algorithm"', function() {
+    expect(flowy.type()).to.be.equal('Algorithm');
+  });
+
+  it('.type("test") should set type as "test"', function() {
+    flowy.type('test');
+    expect(flowy.type()).to.be.equal('test');
+  });
+
+  
 
   
   it('Should create a inner block with desc "test"', function() {
