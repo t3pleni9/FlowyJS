@@ -5,6 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "commit": "git-cz",
+    "test:single":  "mocha src/indexSpec.js",
     "test": "mocha src/indexSpec.js -w",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
