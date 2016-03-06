@@ -53,33 +53,6 @@ Flowy = function() {
       return chart.block.tree;
     }(): null;
   };
-
-  this.elseif = function(desc, elseType) {
-    elseType = (elseType || 'ElseIf');
-    if(['If','ElseIf'].indexOf(chart.block.type) != -1 ) {  
-      var block = this.createBlock(desc, elseType);
-      this.end();
-      this.pushBlock(block, true);
-      return this;
-    } else {
-      throw 'Else without an If';
-    }  
-  };
-
-  this.getJSON = function() {
-    var getObjectRec = function(block) {
-      
-      if(block.tree)
-      block.tree = block.tree.map(function(_) {
-                     return getObjectRec(_); 
-                   });
-      return block;
-    };
-
-    while(this.end() != null);
-    var block = getObjectRec(this.getBlock());
-    return block;
-  };
 };
 
 Flowy.prototype.createBlock = function(desc, type) {
@@ -88,19 +61,19 @@ Flowy.prototype.createBlock = function(desc, type) {
 };
 
 Flowy.prototype.statement = function(desc){
-  var block = this.createBlock(desc, 'Statement');
+  var block = new Block(desc, 'Statement');
   this.pushBlock(block);
   return this;
 };
 
 Flowy.prototype.if = function(desc) {
-  var block = this.createBlock(desc, 'If');
+  var block =  new Block(desc, 'If');
   this.pushBlock(block, true);
   return this;
 };
 
 Flowy.prototype.then = function(desc) { 
-  var block = this.createBlock(desc, desc?'Statement':'Empty');
+  var block =  new Block(desc, desc?'Statement':'Empty');
   this.pushBlock(block);
   return this;
 };
@@ -109,6 +82,31 @@ Flowy.prototype.do = function(desc) {
   return this.then(desc);
 };
 
+Flowy.prototype.elseif = function(desc, elseType) {
+  elseType = (elseType || 'ElseIf');
+  if(['If','ElseIf'].indexOf(this.getBlock().type) != -1 ) {
+    var block =  new Block(desc, elseType);
+    this.end();
+    this.pushBlock(block, true);
+    return this;
+  } else {
+    throw 'Else without an If';
+  }  
+};
+
 Flowy.prototype.else = function(desc) {
   return this.elseif(desc, 'Else');
-}; 
+};
+
+Flowy.prototype.getJSON = function() {
+  while(this.end() != null);
+  var block =  (function recurse(block) {
+    block.tree = block.tree.map(
+      function(_) {
+        return recurse(_);
+      }
+    );
+    return block;
+  })(this.getBlock());
+  return block;
+};
