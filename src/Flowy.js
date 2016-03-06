@@ -1,5 +1,5 @@
 Flowy = function() {
-  var block = new Block();
+  var block = new Block('begin');
   this.getBlock = function() {
     return block.getObject();
   };
@@ -7,28 +7,35 @@ Flowy = function() {
   this.setBlock = function(blockObject) {
     block = blockObject;
   }
-    
+
+  this.createBlock = function(name) {
+    var block = new Block();
+    block.setName(name);
+    return block.getObject();
+  } 
 };
 
 Flowy.prototype.getJSON = function() {
   return this.getBlock();
 };
 
-var Block = function() {
+
+
+var Block = function(blockName) {
   var blockObject = {
     tree: [],
-    name: ""
+    name: blockName
   };
 
   this.getObject = function() {
     return blockObject;
   };
 
-  this.setObject = function(name) {
+  this.setName = function(name) {
     blockObject.name = name;
   }
 
-  this.addToObject = function(block) {
+  this.addBlock = function(block) {
     blockObject.tree.push(block);
   }
 }

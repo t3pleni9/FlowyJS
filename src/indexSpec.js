@@ -12,10 +12,11 @@ describe('flowy', function() {
   it('Should create Flowy class on .getJSON', function() {
     
     expect(flowy.getJSON().tree).to.be.empty;
-    expect(flowy.getJSON().name).to.be.empty;
+    expect(flowy.getJSON().name).to.be.equal('begin');
   });
 
-  xit('Should return 1 for flowy.if', function() {
-    expect(flowy.getObject().if).to.be.equal(1);
+  it('Should create a block with name "test"', function() {
+    var block = flowy.createBlock('test');
+    expect(block.name).to.be.equal('test');
   });
 });
