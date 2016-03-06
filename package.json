@@ -1,0 +1,27 @@
+{
+  "name": "flowyjs",
+  "version": "1.0.0",
+  "description": "Create flowcharts algorithmically",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "mocha src/indexSpec.js -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/t3pleni9/FlowyJS.git"
+  },
+  "keywords": [
+    "Flowchart",
+    "Algorithm"
+  ],
+  "author": "Justin Jose <justinjose999@gmail.com>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/t3pleni9/FlowyJS/issues"
+  },
+  "homepage": "https://github.com/t3pleni9/FlowyJS#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "2.4.5"
+  }
+}
