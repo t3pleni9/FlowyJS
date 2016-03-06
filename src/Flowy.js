@@ -1,10 +1,30 @@
-Flowy = function() {
-  var chart = {
-    block: new Block('Begin', 'Algorithm')
+var Block = function(desc, type) {
+  return {
+    tree:[],
+    desc: desc,
+    type: type
   };
+}
+
+Flowy = function() {
+
+  var chart = {
+    block: new Block("Begin", "Algorithm")
+  }
 
   var topBlock = [];
   
+  this.desc = function(desc){
+    return desc ? chart.block.desc = desc : chart.block.desc;
+  };
+
+  this.type = function(type){
+    return type ? chart.block.type = type : chart.block.type;
+  }
+  
+  this.push = function(block) {
+    this.tree.push(block);
+  }
   
   this.getBlock = function() {
     return chart.block;
@@ -17,7 +37,7 @@ Flowy = function() {
   this.tree = chart.block.tree;
   
   this.pushBlock = function(block, updateTop) {
-    chart.block.push(block);
+    this.push(block);
     updateTop ? this.tree = function()
     {
       topBlock.push(chart.block);
@@ -31,41 +51,41 @@ Flowy = function() {
     {
       chart.block =  topBlock.pop()
       return chart.block.tree;
-    }()  : null;
-  };
-  
-  this.else = function(desc) {
-    var type = chart.block.type();
-    if(['If','ElseIf'].indexOf(type) != -1 ) {  
-      var block = this.createBlock(desc, 'Else');
-      this.end();
-      this.pushBlock(block, true);
-      return this;
-    } else {
-      throw "Else without an If";
-    }
+    }(): null;
   };
 
-  this.elseif = function(desc) {
-    var type = chart.block.type();
-    if(['If','ElseIf'].indexOf(type) != -1 ) {
-      var block = this.createBlock(desc, 'ElseIf');
+  this.elseif = function(desc, elseType) {
+    elseType = (elseType || 'ElseIf');
+    if(['If','ElseIf'].indexOf(chart.block.type) != -1 ) {  
+      var block = this.createBlock(desc, elseType);
       this.end();
       this.pushBlock(block, true);
       return this;
     } else {
-      throw new Error('Else without an If')
+      throw 'Else without an If';
     }  
+  };
+
+  this.getJSON = function() {
+    var getObjectRec = function(block) {
+      
+      if(block.tree)
+      block.tree = block.tree.map(function(_) {
+                     _ = getObjectRec(_);
+                     return _; 
+                   });
+      return block;
+    };
+
+    while(this.end() != null);
+    var block = getObjectRec(this.getBlock());
+    return block;
   };
 };
 
 Flowy.prototype.createBlock = function(desc, type) {
   var block = new Block(desc, type);
   return block;
-}
-
-Flowy.prototype.getJSON = function() {
-  return this.getBlock();
 };
 
 Flowy.prototype.statement = function(desc){
@@ -90,34 +110,6 @@ Flowy.prototype.do = function(desc) {
   return this.then(desc);
 };
 
-
-
-
-
-var Block = function(blockDesc, blockType) {
-  var blockObject = {
-    tree: [],
-    desc: blockDesc,
-    type: blockType
-  };
-
-  this.getObject = function() {
-    return blockObject;
-  };
-  
-  this.desc = function(desc){
-    return desc ? blockObject.desc = desc : blockObject.desc;
-  };
-
-  this.type = function(type){
-    return type ? blockObject.type = type : blockObject.type;
-  }
-  
-  this.tree =  blockObject.tree;
-  
-  this.push = function(block) {
-    blockObject.tree.push(block);
-  };
-};
-
-  
+Flowy.prototype.else = function(desc) {
+  return this.elseif(desc, 'Else');
+}; 
