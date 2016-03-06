@@ -1,6 +1,6 @@
 {
   "name": "flowyjs",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Create flowcharts algorithmically",
   "main": "./src/index.js",
   "scripts": {
