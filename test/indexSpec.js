@@ -1,8 +1,8 @@
 var expect = require('chai').expect;
-var flowyjs = require('../src/index');
+var lib = require('../src/index');
 
 describe('index', function() {
   it('Should Create a flowy object', function() {
-    expect(flowyjs.flowy).to.be.an.instanceOf(Flowy);
+    expect(lib.flowy).to.be.an.instanceOf(Flowy);
   });
 });
