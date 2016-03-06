@@ -105,6 +105,12 @@ describe('flowy', function() {
       expect(flowy.getBlock().desc()).to.be.equal('x = x + 2');
     });
 
+    it('Should create a ElseIf block and add steps in then block with empty block', function(){
+      flowy.if('x > 10').then().do('x = x + 1').elseif('x < 3').then('x = x - 1');
+      expect(flowy.tree[1].type()).to.be.equal('Statement');
+      expect(flowy.tree[1].desc()).to.be.equal('x = x - 1');
+    });
+
     it('Top block should be Else block', function(){
       flowy.if('x > 2').then('x = x + 1').else('x = x + 2');
       expect(flowy.getBlock().type()).to.be.equal('Else');
