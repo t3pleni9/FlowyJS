@@ -1,4 +1,4 @@
-/*global  */
+/*global    */
 var expect = require('chai').expect;
 require('../src/Flowy');
 
@@ -199,6 +199,20 @@ describe('flowy', function() {
           desc: 'Begin',
           type: 'Algorithm'
         });
+    });
+  });
+
+  describe("Loop construct", function(){
+    it("Should add type as While on while", function() {
+      flowy.while("x > 2");
+      expect(flowy.type()).to.eql("While");
+      expect(flowy.desc()).to.eql("x > 2");
+    });
+
+    it("Should add type as Loop on loop", function() {
+      flowy.loop("docList");
+      expect(flowy.type()).to.eql("Loop");
+      expect(flowy.desc()).to.eql("docList");
     });
   });
 });

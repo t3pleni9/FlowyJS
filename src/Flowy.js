@@ -98,6 +98,18 @@ Flowy.prototype.else = function(desc) {
   return this.elseif(desc, 'Else');
 };
 
+Flowy.prototype.while = function(desc) {
+  var block = new Block(desc, 'While');
+  this.pushBlock(block, true);
+  return this;
+}
+
+Flowy.prototype.loop = function(desc) {
+  var block = new Block(desc, 'Loop');
+  this.pushBlock(block, true);
+  return this;
+}
+
 Flowy.prototype.getJSON = function() {
   while(this.end() != null);
   var block =  (function recurse(block) {
